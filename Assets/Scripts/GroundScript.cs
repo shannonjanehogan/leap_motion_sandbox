@@ -161,6 +161,10 @@ public class GroundScript : MonoBehaviour
     // Given a Game Object and a Color, changes the color of the Game Object to match the given color
     void ChangeShapeColor(GameObject gameObject, Color color)
     {
+        if (gameObject == null)
+        {
+            return;
+        }
         var material = gameObject.GetComponent<MeshRenderer>().material;
         material.color = color;
         gameObject.GetComponent<MeshRenderer>().material = material;
