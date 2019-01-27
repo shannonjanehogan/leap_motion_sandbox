@@ -5,36 +5,36 @@ using UnityEngine;
 
 public class GroundScript : MonoBehaviour
 {
-    public GameObject cube;
-    public List<GameObject> cubes;
+    //public GameObject cube;
+    public List<GameObject> shapeList;
+    public GameObject verticalShapePrefab;
+    public GameObject verticalShape;
 
     // Start is called before the first frame update
     void Start()
     {
-        cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = new Vector3(0, 0.5f, 0);
-        var cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        cube1.transform.position = new Vector3(0, 0.5f, 0);
-        var cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube2.transform.position = new Vector3(0, 0.5f, 0);
-        cubes = new List<GameObject>();
-        cubes.Add(cube);
-        cubes.Add(cube1);
-        cubes.Add(cube2);
+        verticalShape = Instantiate(verticalShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
+        //shape1.transform.position = new Vector3(0, 0.5f, 0);
+        shapeList = new List<GameObject>();
+        shapeList.Add(verticalShape);
+
+        Debug.Log(verticalShape.transform);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        cube.transform.Translate(Vector3.back * Time.deltaTime);
+        verticalShape.transform.Translate(Vector3.back * Time.deltaTime, Space.World);
 
-        var pos = cube.transform.position;
-        if (pos.z < -7)
+        var pos = verticalShape.transform.position;
+        Debug.Log(pos);
+
+        if (pos.z < -11)
         {
-            cubes.Remove(cube);
-            Destroy(cube);
-            cube = cubes[cubes.Count - 1];
+            shapeList.Remove(verticalShape);
+            Destroy(verticalShape);
+            verticalShape = shapeList[shapeList.Count - 1];
         }
 
     }
