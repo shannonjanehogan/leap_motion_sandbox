@@ -274,8 +274,8 @@ GameObject:
   - component: {fileID: 1796905761}
   - component: {fileID: 1796905760}
   - component: {fileID: 1796905759}
-  - component: {fileID: 1796905758}
   - component: {fileID: 1796905762}
+  - component: {fileID: 1796905758}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -368,5 +368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca2ea7cce2e0489588835d27d97d242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube: {fileID: 0}
-  cubes: []
+  shapeList: []
+  verticalShapePrefab: {fileID: 100000, guid: 391ec8a1614b84c6a87cedb4ff1794d5, type: 3}
+  verticalShape: {fileID: 0}
