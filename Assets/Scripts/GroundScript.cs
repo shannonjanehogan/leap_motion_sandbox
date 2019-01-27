@@ -19,28 +19,64 @@ public class GroundScript : MonoBehaviour
     public GameObject currShape;
     public GameObject nextShape;
     public GameObject extendedShape;
+    public System.Random random;
     public int score = 0;
+    public int curIdx;
+    public int nextIdx;
+    public List<GameObject> prefabs;
 
     // Start is called before the first frame update
     void Start()
     {
+        random = new System.Random(587);
         // Instantiate all shapes
-        verticalShape = Instantiate(verticalShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
-        yShape = Instantiate(yShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
-        lShape = Instantiate(lShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
-        cShape = Instantiate(cShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
-        dShape = Instantiate(dShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
 
-        // Add shapes to list of shapes
-        shapeList = new List<GameObject> { verticalShape, lShape, yShape, cShape, dShape };
+        prefabs = new List<GameObject>
+        {
+            verticalShapePrefab,
+            yShapePrefab,
+            lShapePrefab,
+            cShapePrefab,
+            dShapePrefab
+        };
+        
+        shapeList = new List<GameObject>
+        {
+            Instantiate(verticalShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right)),
+            Instantiate(yShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right)),
+            Instantiate(lShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right)),
+            Instantiate(cShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right)),
+            Instantiate(dShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right))
+        };
 
-        SetInitialShapeColor();
+        foreach (GameObject shape in shapeList)
+        {
+            SetInitialShapeColor(shape);
+        }
 
         // Set the current and next Shapes
-        currShape = verticalShape;
+        curIdx = 0;
+        nextIdx = random.Next(1, shapeList.Count-1);
+        currShape = shapeList[curIdx];
         MakeExtendedShape(currShape);
-        nextShape = lShape;
+
+        nextShape = shapeList[nextIdx];
         SetScoreText("Score: 0");
+    }
+
+    void GetNewShapes()
+    {
+        curIdx = nextIdx;
+        currShape = nextShape;
+        var rand = curIdx;
+       while (rand == curIdx || rand == nextIdx)
+        {
+            rand = random.Next(shapeList.Count);
+        }
+        nextIdx = rand;
+        var newShape = Instantiate(prefabs[nextIdx], new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
+        SetInitialShapeColor(newShape);
+        nextShape = newShape;
     }
 
     public void HandleCollisionStarted()
@@ -79,22 +115,16 @@ public class GroundScript : MonoBehaviour
             if (pos.z < -9)
             {
                 FadeOutObject(currShape);
+                FadeOutObject(extendedShape);
             }
 
             // Once the current shape passes the camera, destroy it, then update the current shape
             if (pos.z < -10)
             {
-                shapeList.Remove(currShape);
-                Destroy(currShape);
-                if (shapeList.Count > 0)
-                {
-                    currShape = shapeList[0];
-                    MakeExtendedShape(currShape);
-                }
-                if (shapeList.Count > 1)
-                {
-                    nextShape = shapeList[1];
-                }
+                //shapeList.Remove(currShape);
+                //Destroy(currShape);
+                GetNewShapes();
+                MakeExtendedShape(currShape);
             }
         }
     }
@@ -147,13 +177,10 @@ public class GroundScript : MonoBehaviour
     }
    
     // Set color of all shapes to black
-    void SetInitialShapeColor()
+    void SetInitialShapeColor(GameObject shape)
     {
-        foreach (GameObject shape in shapeList)
-        {
-            var material = TransparentMaterial();
-            ChangeShapeColor(shape, Color.black);
-        }
+        var material = TransparentMaterial();
+        ChangeShapeColor(shape, Color.black);
     }
 
     public void SetNewScore(int newScore)
