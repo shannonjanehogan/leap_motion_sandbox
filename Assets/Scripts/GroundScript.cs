@@ -23,10 +23,9 @@ public class GroundScript : MonoBehaviour
         yShape = Instantiate(yShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         lShape = Instantiate(lShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         // Add shapes to list of shapes
-        shapeList = new List<GameObject>();
-        shapeList.Add(verticalShape);
-        shapeList.Add(yShape);
-        shapeList.Add(lShape);
+        shapeList = new List<GameObject> { verticalShape, lShape, yShape };
+
+        SetInitialShapeColor();
 
         // Set the current and next Shapes
         currShape = verticalShape;
@@ -52,13 +51,28 @@ public class GroundScript : MonoBehaviour
         {
             shapeList.Remove(currShape);
             Destroy(currShape);
-            currShape = shapeList[shapeList.Count - 1];
+            currShape = shapeList[0];
             if (shapeList.Count > 1)
             {
-                nextShape = shapeList[shapeList.Count - 2];
+                nextShape = shapeList[1];
             }
         }
 
+    }
+
+    void SetInitialShapeColor()
+    {
+        List<Color> colors = new List<Color> { Color.cyan, Color.grey, Color.black };
+
+        for(int i = 0; i < shapeList.Count; i++)
+        {
+            Renderer rend = shapeList[i].GetComponent<Renderer>();
+            rend.material.shader = Shader.Find("_Color");
+            rend.material.SetColor("_Color", colors[i]);
+            //Find the Specular shader and change its Color to red
+            rend.material.shader = Shader.Find("Specular");
+            rend.material.SetColor("_SpecColor", Color.grey);
+        }
     }
 
     Vector3 ScaleVector(Vector3 localScale, float factor)
