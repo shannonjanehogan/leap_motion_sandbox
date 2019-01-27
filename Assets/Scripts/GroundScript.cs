@@ -13,6 +13,7 @@ public class GroundScript : MonoBehaviour
     public GameObject lShapePrefab;
     public GameObject lShape;
     public GameObject currShape;
+    public GameObject nextShape;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +28,9 @@ public class GroundScript : MonoBehaviour
         shapeList.Add(yShape);
         shapeList.Add(lShape);
 
-        // Set the current Shape
+        // Set the current and next Shapes
         currShape = verticalShape;
+        nextShape = lShape;
     }
 
     // Update is called once per frame
@@ -38,8 +40,12 @@ public class GroundScript : MonoBehaviour
         currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
         currShape.transform.localScale -= ScaleVector(currShape.transform.localScale, 0.003f);
         var pos = currShape.transform.position;
-
         currShape.transform.position = new Vector3(pos.x, 0, pos.z);
+
+        if (shapeList.Count > 1)
+        {
+            nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 15), Space.World);
+        }
 
         // Once the current shape passes the camera, destroy it, then update the current shape
         if (pos.z < -10)
@@ -47,6 +53,10 @@ public class GroundScript : MonoBehaviour
             shapeList.Remove(currShape);
             Destroy(currShape);
             currShape = shapeList[shapeList.Count - 1];
+            if (shapeList.Count > 1)
+            {
+                nextShape = shapeList[shapeList.Count - 2];
+            }
         }
 
     }
