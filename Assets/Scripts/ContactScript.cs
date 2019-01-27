@@ -17,6 +17,7 @@ public class ContactScript : MonoBehaviour
 
     private void onContactStay()
     {
+        Debug.Log("TOUCHING");
         foreach (InteractionController controller in _intObj.contactingControllers)
         {
             float count = 0;
