@@ -67,6 +67,12 @@ public class GroundScript : MonoBehaviour
                 ScaleShape(nextShape, 0.003f, false);
             }
 
+            // Once shape is past hands, fade it out
+            if (pos.z < -9)
+            {
+                FadeOutObject(currShape);
+            }
+
             // Once the current shape passes the camera, destroy it, then update the current shape
             if (pos.z < -10)
             {
@@ -94,16 +100,7 @@ public class GroundScript : MonoBehaviour
         extendedShape = Instantiate(original) as GameObject;
 
         //Set alpha
-        var material = new Material(Shader.Find("Standard"));
-
-        material.SetOverrideTag("RenderType", "Transparent");
-        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        material.SetInt("_ZWrite", 0);
-        material.DisableKeyword("_ALPHATEST_ON");
-        material.EnableKeyword("_ALPHABLEND_ON");
-        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        material.renderQueue = 3000;
+        var material = TransparentMaterial();
 
         Color color = Color.gray;
         color.a = 0.3f;
@@ -115,13 +112,39 @@ public class GroundScript : MonoBehaviour
         scale.y = 2000;
         extendedShape.transform.localScale = scale;
     }
+
+    void FadeOutObject(GameObject shape)
+    {
+        var curColor = shape.GetComponent<MeshRenderer>().material.color;
+        var material = TransparentMaterial();
+        curColor.a *= 0.95f;
+        material.color = curColor;
+        shape.GetComponent<MeshRenderer>().material = material;
+    }
+
+    Material TransparentMaterial()
+    {
+        var material = new Material(Shader.Find("Standard"));
+
+        material.SetOverrideTag("RenderType", "Transparent");
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = 3000;
+
+        return material;
+    }
    
     // Set color of all shapes to black
     void SetInitialShapeColor()
     {
-        for(int i = 0; i < shapeList.Count; i++)
+        foreach (GameObject shape in shapeList)
         {
-            ChangeShapeColor(shapeList[i], Color.black);
+            var material = TransparentMaterial();
+            ChangeShapeColor(shape, Color.black);
         }
     }
 
@@ -135,12 +158,9 @@ public class GroundScript : MonoBehaviour
     // Given a Game Object and a Color, changes the color of the Game Object to match the given color
     void ChangeShapeColor(GameObject gameObject, Color color)
     {
-        Renderer rend = gameObject.GetComponent<Renderer>();
-        rend.material.shader = Shader.Find("_Color");
-        rend.material.SetColor("_Color", color);
-        //Find the Specular shader and change its Color to red
-        rend.material.shader = Shader.Find("Specular");
-        rend.material.SetColor("_SpecColor", Color.grey);
+        var material = gameObject.GetComponent<MeshRenderer>().material;
+        material.color = color;
+        gameObject.GetComponent<MeshRenderer>().material = material;
     }
 
     void ScaleShape(GameObject gameObject, float factor, bool extended)
