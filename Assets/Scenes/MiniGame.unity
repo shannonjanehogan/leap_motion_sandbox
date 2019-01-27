@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -419,4 +419,7 @@ MonoBehaviour:
   verticalShape: {fileID: 0}
   yShapePrefab: {fileID: 100000, guid: 459ba0f45b4134ba4be1ad0fb4f5968f, type: 3}
   yShape: {fileID: 0}
+  lShapePrefab: {fileID: 100000, guid: 916def0a31ae0472c95be7946519dc76, type: 3}
+  lShape: {fileID: 0}
   currShape: {fileID: 0}
+  nextShape: {fileID: 0}
