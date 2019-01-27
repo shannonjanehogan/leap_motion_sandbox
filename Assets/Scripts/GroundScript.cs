@@ -24,11 +24,9 @@ public class GroundScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        verticalShape.transform.Translate(Vector3.back * Time.deltaTime, Space.World);
+        verticalShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
 
         var pos = verticalShape.transform.position;
-        Debug.Log(pos);
 
         if (pos.z < -11)
         {
