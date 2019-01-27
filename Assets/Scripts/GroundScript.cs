@@ -52,10 +52,14 @@ public class GroundScript : MonoBehaviour
         {
             // Move the current shape forwards
             currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-            ScaleShape(currShape, 0.003f, true);
-            ScaleShape(extendedShape, 0.003f, true);
+            ScaleShape(currShape, 0.002f, true);
+            ScaleShape(extendedShape, 0.002f, true);
             var pos = currShape.transform.position;
-            currShape.transform.position = new Vector3(pos.x, 0.5f, pos.z);
+            foreach (GameObject shape in shapeList)
+            {
+                AdjustVerticalPosition(shape, 0);
+            }
+            AdjustVerticalPosition(extendedShape, 0);
 
             if (shapeList.Count > 1)
             {
@@ -147,5 +151,14 @@ public class GroundScript : MonoBehaviour
         float zScale = curScale.z * factor;
 
         gameObject.transform.localScale -= new Vector3(xScale, yScale, zScale);
+    }
+
+    void AdjustVerticalPosition(GameObject gameObject, float desiredY)
+    {
+        var pos = gameObject.transform.position;
+        var boundingBoxYSize = gameObject.GetComponent<MeshRenderer>().bounds.size.y;
+        var adjustedY = desiredY + (boundingBoxYSize / 2);
+
+        gameObject.transform.position = new Vector3(pos.x, adjustedY, pos.z);
     }
 }
