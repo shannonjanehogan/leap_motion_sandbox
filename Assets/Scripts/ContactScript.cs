@@ -12,20 +12,26 @@ public class ContactScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        groundObject = (GameObject)GameObject.Find("Ground").GetComponent<GameObject>();
+        groundObject = GameObject.FindGameObjectWithTag("Ground");
         _intObj = GetComponent<InteractionBehaviour>();
         _intObj.OnContactStay += OnContactStay;
         _intObj.OnContactEnd += OnContactEnd;
+        _intObj.OnContactBegin += OnContactBegin;
     }
 
     private void OnContactEnd()
     {
+        Debug.Log("ENDED");
         groundObject.GetComponent<GroundScript>().HandleCollisionEnded();
+    }
+
+    private void OnContactBegin()
+    {
+        groundObject.GetComponent<GroundScript>().HandleCollisionStarted();
     }
 
     private void OnContactStay()
     {
-        groundObject.GetComponent<GroundScript>().HandleCollisionStarted();
         foreach (InteractionController controller in _intObj.contactingControllers)
         {
             float count = 0;
@@ -37,7 +43,6 @@ public class ContactScript : MonoBehaviour
                 }
             }
             score += (int) count;
-            Debug.Log(count);
             SetScoreText(score.ToString());
         }
     }

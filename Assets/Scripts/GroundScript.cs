@@ -138,6 +138,10 @@ public class GroundScript : MonoBehaviour
     // Given a Game Object and a Color, changes the color of the Game Object to match the given color
     void ChangeShapeColor(GameObject gameObject, Color color)
     {
+        if (gameObject == null)
+        {
+            return;
+        }
         Renderer rend = gameObject.GetComponent<Renderer>();
         rend.material.shader = Shader.Find("_Color");
         rend.material.SetColor("_Color", color);
