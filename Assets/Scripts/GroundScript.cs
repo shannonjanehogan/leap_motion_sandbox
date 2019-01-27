@@ -15,6 +15,7 @@ public class GroundScript : MonoBehaviour
     public GameObject lShape;
     public GameObject currShape;
     public GameObject nextShape;
+    public GameObject extendedShape;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,7 @@ public class GroundScript : MonoBehaviour
         shapeList.Add(lShape);
 
         var controller = new Controller();
-        Frame frame = controller.Frame (); // controller is a Controller object
+        Frame frame = controller.Frame ();
         if (frame.Hands.Count > 0)
         {
             List<Hand> hands = frame.Hands;
@@ -40,6 +41,7 @@ public class GroundScript : MonoBehaviour
 
         // Set the current and next Shapes
         currShape = verticalShape;
+        MakeExtendedShape(currShape);
         nextShape = lShape;
     }
 
@@ -50,14 +52,15 @@ public class GroundScript : MonoBehaviour
         {
             // Move the current shape forwards
             currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-            ScaleShape(currShape, 0.003f);
+            ScaleShape(currShape, 0.003f, true);
+            ScaleShape(extendedShape, 0.003f, true);
             var pos = currShape.transform.position;
             currShape.transform.position = new Vector3(pos.x, 0.35f, pos.z);
 
             if (shapeList.Count > 1)
             {
                 nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 15), Space.World);
-                ScaleShape(nextShape, 0.003f);
+                ScaleShape(nextShape, 0.003f, false);
             }
 
             // Once the current shape passes the camera, destroy it, then update the current shape
@@ -68,6 +71,7 @@ public class GroundScript : MonoBehaviour
                 if (shapeList.Count > 0)
                 {
                     currShape = shapeList[shapeList.Count - 1];
+                    MakeExtendedShape(currShape);
                 }
                 if (shapeList.Count > 1)
                 {
@@ -76,13 +80,44 @@ public class GroundScript : MonoBehaviour
             }
         }
     }
+
+    void MakeExtendedShape(GameObject original)
+    {
+        if (extendedShape)
+        {
+            Destroy(extendedShape);
+        }
+        extendedShape = Instantiate(original) as GameObject;
+
+        //Set alpha
+        var material = new Material(Shader.Find("Standard"));
+
+        material.SetOverrideTag("RenderType", "Transparent");
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.DisableKeyword("_ALPHABLEND_ON");
+        material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = 3000;
+
+        Color color = Color.blue;
+        color.a = 0.3f;
+        material.color = color;
+        extendedShape.GetComponent<MeshRenderer>().material = material;
+
+        //Scale it
+        Vector3 scale = extendedShape.transform.localScale;
+        scale.y = 2000;
+        extendedShape.transform.localScale = scale;
+    }
    
 
-    void ScaleShape(GameObject gameObject, float factor)
+    void ScaleShape(GameObject gameObject, float factor, bool extended)
     {
         var curScale = gameObject.transform.localScale;
         float xScale = curScale.x * factor;
-        float yScale = curScale.y * factor;
+        float yScale = extended ? 0 : curScale.y * factor;
         float zScale = curScale.z * factor;
 
         gameObject.transform.localScale -= new Vector3(xScale, yScale, zScale);
