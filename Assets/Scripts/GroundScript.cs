@@ -47,16 +47,17 @@ public class GroundScript : MonoBehaviour
     void Update()
     {
         if (currShape)
-            {
+        {
             // Move the current shape forwards
             currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-            currShape.transform.localScale -= ScaleVector(currShape.transform.localScale, 0.003f);
+            ScaleShape(currShape, 0.003f);
             var pos = currShape.transform.position;
-            currShape.transform.position = new Vector3(pos.x, 0, pos.z);
+            currShape.transform.position = new Vector3(pos.x, 0.35f, pos.z);
 
             if (shapeList.Count > 1)
             {
                 nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 15), Space.World);
+                ScaleShape(nextShape, 0.003f);
             }
 
             // Once the current shape passes the camera, destroy it, then update the current shape
@@ -75,13 +76,15 @@ public class GroundScript : MonoBehaviour
             }
         }
     }
+   
 
-    Vector3 ScaleVector(Vector3 localScale, float factor)
+    void ScaleShape(GameObject gameObject, float factor)
     {
-        float xScale = localScale.x * factor;
-        float yScale = localScale.y * factor;
-        float zScale = localScale.z * factor;
+        var curScale = gameObject.transform.localScale;
+        float xScale = curScale.x * factor;
+        float yScale = curScale.y * factor;
+        float zScale = curScale.z * factor;
 
-        return new Vector3(xScale, yScale, zScale);
+        gameObject.transform.localScale -= new Vector3(xScale, yScale, zScale);
     }
 }
