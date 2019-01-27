@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Leap;
-
 
 public class GroundScript : MonoBehaviour
 {
@@ -50,7 +48,6 @@ public class GroundScript : MonoBehaviour
         if (currShape)
         {
             // Move the current shape forwards
-            HandleCollisionStarted();
             currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
             ScaleShape(currShape, 0.003f);
             var pos = currShape.transform.position;
