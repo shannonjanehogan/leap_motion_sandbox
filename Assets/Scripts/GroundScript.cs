@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Leap;
 
 
 public class GroundScript : MonoBehaviour
@@ -28,6 +29,15 @@ public class GroundScript : MonoBehaviour
         shapeList.Add(yShape);
         shapeList.Add(lShape);
 
+        var controller = new Controller();
+        Frame frame = controller.Frame (); // controller is a Controller object
+        if (frame.Hands.Count > 0)
+        {
+            List<Hand> hands = frame.Hands;
+            Hand firstHand = hands [0];
+            Debug.Log(firstHand.PalmPosition.x + ", " + firstHand.PalmPosition.y);
+        }
+
         // Set the current and next Shapes
         currShape = verticalShape;
         nextShape = lShape;
@@ -36,29 +46,34 @@ public class GroundScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Move the current shape forwards
-        currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-        currShape.transform.localScale -= ScaleVector(currShape.transform.localScale, 0.003f);
-        var pos = currShape.transform.position;
-        currShape.transform.position = new Vector3(pos.x, 0, pos.z);
+        if (currShape)
+            {
+            // Move the current shape forwards
+            currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
+            currShape.transform.localScale -= ScaleVector(currShape.transform.localScale, 0.003f);
+            var pos = currShape.transform.position;
+            currShape.transform.position = new Vector3(pos.x, 0, pos.z);
 
-        if (shapeList.Count > 1)
-        {
-            nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 15), Space.World);
-        }
-
-        // Once the current shape passes the camera, destroy it, then update the current shape
-        if (pos.z < -10)
-        {
-            shapeList.Remove(currShape);
-            Destroy(currShape);
-            currShape = shapeList[shapeList.Count - 1];
             if (shapeList.Count > 1)
             {
-                nextShape = shapeList[shapeList.Count - 2];
+                nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 15), Space.World);
+            }
+
+            // Once the current shape passes the camera, destroy it, then update the current shape
+            if (pos.z < -10)
+            {
+                shapeList.Remove(currShape);
+                Destroy(currShape);
+                if (shapeList.Count > 0)
+                {
+                    currShape = shapeList[shapeList.Count - 1];
+                }
+                if (shapeList.Count > 1)
+                {
+                    nextShape = shapeList[shapeList.Count - 2];
+                }
             }
         }
-
     }
 
     Vector3 ScaleVector(Vector3 localScale, float factor)
