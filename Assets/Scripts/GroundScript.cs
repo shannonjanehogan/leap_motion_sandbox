@@ -30,7 +30,7 @@ public class GroundScript : MonoBehaviour
         cube.transform.Translate(Vector3.back * Time.deltaTime);
 
         var pos = cube.transform.position;
-        if (pos.z < -7)
+        if (pos.z < -11)
         {
             cubes.Remove(cube);
             Destroy(cube);
