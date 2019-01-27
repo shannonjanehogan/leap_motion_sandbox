@@ -31,8 +31,6 @@ public class GroundScript : MonoBehaviour
         cShape = Instantiate(cShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         dShape = Instantiate(dShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
 
-        var thingy = lShape.GetComponent<InteractionBehaviour>();
-
         // Add shapes to list of shapes
         shapeList = new List<GameObject> { verticalShape, lShape, yShape, cShape, dShape };
 
@@ -71,9 +69,9 @@ public class GroundScript : MonoBehaviour
             }
             AdjustVerticalPosition(extendedShape, 0);
 
-            if (shapeList.Count > 1)
+            if (nextShape && pos.z < -4.5)
             {
-                nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 15), Space.World);
+                nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
                 ScaleShape(nextShape, 0.003f, false);
             }
 

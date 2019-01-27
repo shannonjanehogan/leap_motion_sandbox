@@ -28,11 +28,17 @@ public class ContactScript : MonoBehaviour
         foreach (InteractionController controller in _intObj.contactingControllers)
         {
             float count = 0;
-            foreach (ContactBone bone in controller.contactBones)
+            if (controller.softContactEnabled)
             {
-                foreach (float overlap in bone.contactingInteractionBehaviours.Values)
+                count = 10;
+            } else
+            {
+                foreach (ContactBone bone in controller.contactBones)
                 {
-                    count += 1;
+                    foreach (float overlap in bone.contactingInteractionBehaviours.Values)
+                    {
+                        count += 1;
+                    }
                 }
             }
             groundObject.GetComponent<GroundScript>().SetNewScore((int) count);
