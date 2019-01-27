@@ -12,6 +12,10 @@ public class GroundScript : MonoBehaviour
     public GameObject yShape;
     public GameObject lShapePrefab;
     public GameObject lShape;
+    public GameObject cShapePrefab;
+    public GameObject cShape;
+    public GameObject dShapePrefab;
+    public GameObject dShape;
     public GameObject currShape;
     public GameObject nextShape;
     public GameObject extendedShape;
@@ -24,11 +28,13 @@ public class GroundScript : MonoBehaviour
         verticalShape = Instantiate(verticalShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         yShape = Instantiate(yShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         lShape = Instantiate(lShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
+        cShape = Instantiate(cShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
+        dShape = Instantiate(dShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
 
         var thingy = lShape.GetComponent<InteractionBehaviour>();
 
         // Add shapes to list of shapes
-        shapeList = new List<GameObject> { verticalShape, lShape, yShape };
+        shapeList = new List<GameObject> { verticalShape, lShape, yShape, cShape, dShape };
 
         SetInitialShapeColor();
 
