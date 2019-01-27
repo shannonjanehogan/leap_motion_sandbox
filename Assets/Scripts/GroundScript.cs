@@ -45,7 +45,7 @@ public class GroundScript : MonoBehaviour
             ScaleShape(currShape, 0.003f, true);
             ScaleShape(extendedShape, 0.003f, true);
             var pos = currShape.transform.position;
-            currShape.transform.position = new Vector3(pos.x, 0.35f, pos.z);
+            currShape.transform.position = new Vector3(pos.x, 0.5f, pos.z);
 
             if (shapeList.Count > 1)
             {
@@ -60,12 +60,12 @@ public class GroundScript : MonoBehaviour
                 Destroy(currShape);
                 if (shapeList.Count > 0)
                 {
-                    currShape = shapeList[shapeList.Count - 1];
+                    currShape = shapeList[0];
                     MakeExtendedShape(currShape);
                 }
                 if (shapeList.Count > 1)
                 {
-                    nextShape = shapeList[shapeList.Count - 2];
+                    nextShape = shapeList[1];
                 }
             }
         }
