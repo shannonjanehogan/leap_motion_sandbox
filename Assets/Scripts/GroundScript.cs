@@ -32,7 +32,7 @@ public class GroundScript : MonoBehaviour
         currShape = verticalShape;
         MakeExtendedShape(currShape);
         nextShape = lShape;
-        SetScoreText("Score: 100% Accurate");
+        SetScoreText("Score: 0");
     }
 
     void HandleCollisionStarted()
