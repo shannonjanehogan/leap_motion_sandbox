@@ -16,22 +16,16 @@ public class ContactScript : MonoBehaviour
         _intObj = GetComponent<InteractionBehaviour>();
         _intObj.OnContactStay += OnContactStay;
         _intObj.OnContactEnd += OnContactEnd;
-        _intObj.OnContactBegin += OnContactBegin;
     }
 
     private void OnContactEnd()
     {
-        Debug.Log("ENDED");
         groundObject.GetComponent<GroundScript>().HandleCollisionEnded();
-    }
-
-    private void OnContactBegin()
-    {
-        groundObject.GetComponent<GroundScript>().HandleCollisionStarted();
     }
 
     private void OnContactStay()
     {
+        groundObject.GetComponent<GroundScript>().HandleCollisionStarted();
         foreach (InteractionController controller in _intObj.contactingControllers)
         {
             float count = 0;
