@@ -8,15 +8,24 @@ public class ContactScript : MonoBehaviour
 {
     protected InteractionBehaviour _intObj;
     public int score = 0;
+    GameObject groundObject;
     // Start is called before the first frame update
     void Start()
     {
+        groundObject = (GameObject)GameObject.Find("Ground").GetComponent<GameObject>();
         _intObj = GetComponent<InteractionBehaviour>();
-        _intObj.OnContactStay += onContactStay;
+        _intObj.OnContactStay += OnContactStay;
+        _intObj.OnContactEnd += OnContactEnd;
     }
 
-    private void onContactStay()
+    private void OnContactEnd()
     {
+        groundObject.GetComponent<GroundScript>().HandleCollisionEnded();
+    }
+
+    private void OnContactStay()
+    {
+        groundObject.GetComponent<GroundScript>().HandleCollisionStarted();
         foreach (InteractionController controller in _intObj.contactingControllers)
         {
             float count = 0;
@@ -25,7 +34,6 @@ public class ContactScript : MonoBehaviour
                 foreach (float overlap in bone.contactingInteractionBehaviours.Values)
                 {
                     count += 1;
-
                 }
             }
             score += (int) count;

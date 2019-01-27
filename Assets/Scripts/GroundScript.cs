@@ -35,12 +35,12 @@ public class GroundScript : MonoBehaviour
         SetScoreText("Score: 0");
     }
 
-    void HandleCollisionStarted()
+    public void HandleCollisionStarted()
     {
         ChangeShapeColor(currShape, Color.red);
     }
 
-    void HandleCollisionEnded()
+    public void HandleCollisionEnded()
     {
         ChangeShapeColor(currShape, Color.green);
     }
