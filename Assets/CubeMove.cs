@@ -13,7 +13,7 @@ public class CubeMove : MonoBehaviour
     {
         cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.position = new Vector3(0, 0.5f, 0);
-        var cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        var cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         cube1.transform.position = new Vector3(0, 0.5f, 0);
         var cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube2.transform.position = new Vector3(0, 0.5f, 0);
