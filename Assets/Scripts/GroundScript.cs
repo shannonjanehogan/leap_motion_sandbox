@@ -75,6 +75,7 @@ public class GroundScript : MonoBehaviour
         }
         nextIdx = rand;
         var newShape = Instantiate(prefabs[nextIdx], new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
+        shapeList[nextIdx] = newShape;
         SetInitialShapeColor(newShape);
         nextShape = newShape;
     }
@@ -95,9 +96,9 @@ public class GroundScript : MonoBehaviour
         if (currShape)
         {
             // Move the current shape forwards
-            currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-            ScaleShape(currShape, 0.0038f, true);
-            ScaleShape(extendedShape, 0.0038f, true);
+            currShape.transform.Translate(Vector3.back * (Time.deltaTime * 50), Space.World);
+            ScaleShape(currShape, 0.008f, true);
+            ScaleShape(extendedShape, 0.008f, true);
             var pos = currShape.transform.position;
             foreach (GameObject shape in shapeList)
             {
@@ -108,7 +109,7 @@ public class GroundScript : MonoBehaviour
             if (nextShape && pos.z < -4.5)
             {
                 nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-                ScaleShape(nextShape, 0.0038f, false);
+                ScaleShape(nextShape, 0.008f, false);
             }
 
             // Once shape is past hands, fade it out
