@@ -15,6 +15,12 @@ public class ContactScript : MonoBehaviour
         _intObj = GetComponent<InteractionBehaviour>();
         _intObj.OnContactStay += OnContactStay;
         _intObj.OnContactEnd += OnContactEnd;
+        _intObj.OnSuspensionBegin = OnSuspension;
+    }
+
+    private void OnSuspension(InteractionController controller)
+    {
+        groundObject.GetComponent<GroundScript>().HandleCollisionEnded();
     }
 
     private void OnContactEnd()

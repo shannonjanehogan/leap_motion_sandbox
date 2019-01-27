@@ -96,8 +96,8 @@ public class GroundScript : MonoBehaviour
         {
             // Move the current shape forwards
             currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-            ScaleShape(currShape, 0.002f, true);
-            ScaleShape(extendedShape, 0.002f, true);
+            ScaleShape(currShape, 0.0038f, true);
+            ScaleShape(extendedShape, 0.0038f, true);
             var pos = currShape.transform.position;
             foreach (GameObject shape in shapeList)
             {
@@ -108,7 +108,7 @@ public class GroundScript : MonoBehaviour
             if (nextShape && pos.z < -4.5)
             {
                 nextShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
-                ScaleShape(nextShape, 0.003f, false);
+                ScaleShape(nextShape, 0.0038f, false);
             }
 
             // Once shape is past hands, fade it out
