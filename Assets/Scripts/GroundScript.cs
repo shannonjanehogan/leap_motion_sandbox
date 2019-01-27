@@ -32,6 +32,7 @@ public class GroundScript : MonoBehaviour
         currShape = verticalShape;
         MakeExtendedShape(currShape);
         nextShape = lShape;
+        SetScoreText("Score: 100% Accurate");
     }
 
     void HandleCollisionStarted()
@@ -111,16 +112,23 @@ public class GroundScript : MonoBehaviour
         extendedShape.transform.localScale = scale;
     }
    
+    // Set color of all shapes to black
     void SetInitialShapeColor()
     {
-        List<Color> colors = new List<Color> { Color.black, Color.black, Color.black };
-
         for(int i = 0; i < shapeList.Count; i++)
         {
-            ChangeShapeColor(shapeList[i], colors[i]);
+            ChangeShapeColor(shapeList[i], Color.black);
         }
     }
 
+    // Changes the text of the Score Text UI component to the given string
+    void SetScoreText(string newText)
+    {
+        TextMesh textMesh = (TextMesh) GameObject.Find("Score Text").GetComponent<TextMesh>();
+        textMesh.text = newText;
+    }
+
+    // Given a Game Object and a Color, changes the color of the Game Object to match the given color
     void ChangeShapeColor(GameObject gameObject, Color color)
     {
         Renderer rend = gameObject.GetComponent<Renderer>();
