@@ -10,6 +10,8 @@ public class GroundScript : MonoBehaviour
     public GameObject verticalShape;
     public GameObject yShapePrefab;
     public GameObject yShape;
+    public GameObject lShapePrefab;
+    public GameObject lShape;
     public GameObject currShape;
 
     // Start is called before the first frame update
@@ -18,10 +20,12 @@ public class GroundScript : MonoBehaviour
         // Instantiate all shapes
         verticalShape = Instantiate(verticalShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         yShape = Instantiate(yShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
+        lShape = Instantiate(lShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         // Add shapes to list of shapes
         shapeList = new List<GameObject>();
         shapeList.Add(verticalShape);
         shapeList.Add(yShape);
+        shapeList.Add(lShape);
 
         // Set the current Shape
         currShape = verticalShape;
@@ -30,10 +34,12 @@ public class GroundScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Move the current shape forwards
         currShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
         var pos = currShape.transform.position;
 
-        if (pos.z < -11)
+        // Once the current shape passes the camera, destroy it, then update the current shape
+        if (pos.z < -10)
         {
             shapeList.Remove(currShape);
             Destroy(currShape);
