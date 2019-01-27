@@ -14,7 +14,6 @@ public class GroundScript : MonoBehaviour
     void Start()
     {
         verticalShape = Instantiate(verticalShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
-        //shape1.transform.position = new Vector3(0, 0.5f, 0);
         shapeList = new List<GameObject>();
         shapeList.Add(verticalShape);
 
@@ -25,8 +24,10 @@ public class GroundScript : MonoBehaviour
     void Update()
     {
         verticalShape.transform.Translate(Vector3.back * (Time.deltaTime * 20), Space.World);
+        verticalShape.transform.localScale -= ScaleVector(verticalShape.transform.localScale, 0.003f);
 
         var pos = verticalShape.transform.position;
+        verticalShape.transform.position = new Vector3(pos.x, 0, pos.z);
 
         if (pos.z < -11)
         {
@@ -35,5 +36,14 @@ public class GroundScript : MonoBehaviour
             verticalShape = shapeList[shapeList.Count - 1];
         }
 
+    }
+
+    Vector3 ScaleVector(Vector3 localScale, float factor)
+    {
+        float xScale = localScale.x * factor;
+        float yScale = localScale.y * factor;
+        float zScale = localScale.z * factor;
+
+        return new Vector3(xScale, yScale, zScale);
     }
 }
