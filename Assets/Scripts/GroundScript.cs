@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Leap;
-
 
 public class GroundScript : MonoBehaviour
 {
@@ -24,6 +22,7 @@ public class GroundScript : MonoBehaviour
         verticalShape = Instantiate(verticalShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         yShape = Instantiate(yShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
         lShape = Instantiate(lShapePrefab, new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(90, Vector3.right));
+
         // Add shapes to list of shapes
         shapeList = new List<GameObject> { verticalShape, lShape, yShape };
 
@@ -33,6 +32,16 @@ public class GroundScript : MonoBehaviour
         currShape = verticalShape;
         MakeExtendedShape(currShape);
         nextShape = lShape;
+    }
+
+    void HandleCollisionStarted()
+    {
+        ChangeShapeColor(currShape, Color.red);
+    }
+
+    void HandleCollisionEnded()
+    {
+        ChangeShapeColor(currShape, Color.green);
     }
 
     // Update is called once per frame
@@ -104,17 +113,22 @@ public class GroundScript : MonoBehaviour
    
     void SetInitialShapeColor()
     {
-        List<Color> colors = new List<Color> { Color.cyan, Color.grey, Color.black };
+        List<Color> colors = new List<Color> { Color.black, Color.black, Color.black };
 
         for(int i = 0; i < shapeList.Count; i++)
         {
-            Renderer rend = shapeList[i].GetComponent<Renderer>();
-            rend.material.shader = Shader.Find("_Color");
-            rend.material.SetColor("_Color", colors[i]);
-            //Find the Specular shader and change its Color to red
-            rend.material.shader = Shader.Find("Specular");
-            rend.material.SetColor("_SpecColor", Color.grey);
+            ChangeShapeColor(shapeList[i], colors[i]);
         }
+    }
+
+    void ChangeShapeColor(GameObject gameObject, Color color)
+    {
+        Renderer rend = gameObject.GetComponent<Renderer>();
+        rend.material.shader = Shader.Find("_Color");
+        rend.material.SetColor("_Color", color);
+        //Find the Specular shader and change its Color to red
+        rend.material.shader = Shader.Find("Specular");
+        rend.material.SetColor("_SpecColor", Color.grey);
     }
 
     void ScaleShape(GameObject gameObject, float factor, bool extended)
