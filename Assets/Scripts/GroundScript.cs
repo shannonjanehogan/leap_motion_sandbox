@@ -15,6 +15,7 @@ public class GroundScript : MonoBehaviour
     public GameObject currShape;
     public GameObject nextShape;
     public GameObject extendedShape;
+    public int score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -149,6 +150,12 @@ public class GroundScript : MonoBehaviour
             var material = TransparentMaterial();
             ChangeShapeColor(shape, Color.black);
         }
+    }
+
+    public void SetNewScore(int newScore)
+    {
+        score += newScore;
+        SetScoreText(score.ToString());
     }
 
     // Changes the text of the Score Text UI component to the given string
