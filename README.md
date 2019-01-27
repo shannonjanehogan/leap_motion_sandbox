@@ -1,9 +1,5 @@
 # Leap Tetris
 
-## See it in action
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/a4pShhrPxZk/0.jpg)](https://www.youtube.com/watch?v=a4pShhrPxZk)
-
 ## Inspiration
 
 Remember those Japanese game shows with human Tetris? Giant, moving walls would move towards contestants, and they would have to contort their bodies to fit through the holes in the wall or get knocked into the water! You can check out the format here (Click the photo to get taken to a YouTube video!): 
@@ -15,6 +11,10 @@ We've been wanting to break into the MLH hardware lab to get our hands on a Leap
 ## What it does
 
 Player uses our _groundbreaking innovation_ (Leap Motion device duct taped to the RBC provided sleep-masks) to attach the leap motion on their forehead. The player must move their hand to match the shape of the wall moving towards them in our unity game. The more your hand overlaps with the wall, the more points you lose. The player with the lowest score wins! 
+
+## See it in action!
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/a4pShhrPxZk/0.jpg)](https://www.youtube.com/watch?v=a4pShhrPxZk)
 
 **Hootsuite Social Game Version:**
 
