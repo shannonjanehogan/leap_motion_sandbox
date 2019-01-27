@@ -7,6 +7,7 @@ using UnityEngine;
 public class ContactScript : MonoBehaviour
 {
     protected InteractionBehaviour _intObj;
+    public int score = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,9 @@ public class ContactScript : MonoBehaviour
 
                 }
             }
+            score += (int) count;
             Debug.Log(count);
+            SetScoreText(score.ToString());
         }
     }
 
@@ -35,5 +38,12 @@ public class ContactScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // Changes the text of the Score Text UI component to the given string
+    void SetScoreText(string newText)
+    {
+        TextMesh textMesh = (TextMesh)GameObject.Find("Score Text").GetComponent<TextMesh>();
+        textMesh.text = "Score: " + newText;
     }
 }
